@@ -115,8 +115,10 @@ class TranslationsController(
 ) : IController {
   @GetMapping(value = ["/{languages}"])
   @Operation(
-    summary = "Get all translations",
-    description = "Returns all translations for specified languages",
+    summary = "Get all translations (lightweight response)",
+    description =
+      "Returns all translations for specified languages in a compact key-value map " +
+        "(much smaller payload than GET /v2/projects/{projectId}/translations).",
     responses = [
       ApiResponse(
         responseCode = "200",
@@ -250,7 +252,10 @@ When null, resulting file will be a flat key-value object.
   }
 
   @GetMapping(value = [""])
-  @Operation(summary = "Get translations in project")
+  @Operation(
+    summary = "Get translations in project",
+    description = "Returns key metadata and translations. For compact payload use GET /v2/projects/{projectId}/translations/{languages}.",
+  )
   @RequiresProjectPermissions(scopes = [Scope.KEYS_VIEW]) // Security: check done internally
   @AllowApiAccess
   @Transactional
